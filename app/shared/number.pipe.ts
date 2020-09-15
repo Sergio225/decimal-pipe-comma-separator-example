@@ -31,7 +31,12 @@ export class NumberFormatPipe implements PipeTransform {
 
     localeString(nStr) {
         if (nStr === '') return ''; 
-        let x, x1, x2, rgx, y1, y2, rgxDecimal;
+        let x, x1, x2, rgx, y1, y2;
+
+        rgx = /[^0-9 ]/g;
+        if(rgx.test(nStr))
+          nStr = nStr.replace(rgx, '');
+
         nStr += '';
         x = nStr.split(/\.|,/);
         x1 = x[0];
@@ -41,9 +46,9 @@ export class NumberFormatPipe implements PipeTransform {
             x1 = x1.replace(rgx, '$1'); // + '.' + '$2'
         }
         if('' !== x2){
-          rgxDecimal = /,(\d{3})(\d+)/;
-          if (rgxDecimal.test(x2)) {
-              x2 = x2.replace(rgxDecimal, '$1'); // + '.' + '$2'
+          rgx = /,(\d{3})(\d+)/;
+          if (rgx.test(x2)) {
+              x2 = x2.replace(rgx, '$1'); // + '.' + '$2'
               x2 = ',' + x2;
           }
         }
@@ -57,7 +62,7 @@ export class NumberFormatPipe implements PipeTransform {
             x = y2[0] +  y1;
         } else {
             x = x1 + x2;
-            if (this.missingOneDecimalCheck(x)) return x += '0';
+            if (this.missingOneDecimalCheck(x)) return x += '00';
             if (this.missingAllDecimalsCheck(x)) return x += ',000';
         }
 
