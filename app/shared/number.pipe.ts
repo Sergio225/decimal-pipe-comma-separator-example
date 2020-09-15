@@ -33,7 +33,7 @@ export class NumberFormatPipe implements PipeTransform {
         if (nStr === '') return ''; 
         let x, x1, x2, rgx, y1, y2;
 
-        rgx = /[^0-9 ]/g;
+        rgx = /[^0-9|.|,]/g;
         if(rgx.test(nStr))
           nStr = nStr.replace(rgx, '');
 
